@@ -1,0 +1,41 @@
+apply plugin: 'java'
+apply plugin: 'jacoco'
+apply plugin: 'findbugs'
+apply plugin: 'pmd'
+apply plugin: 'checkstyle'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+findbugs.toolVersion = '3.0.1'
+
+findbugs {
+    ignoreFailures = true
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.google.code.findbugs:annotations:3.0.1'
+    testCompile 'junit:junit:4.12'
+}
+
+checkstyle {
+    toolVersion = '7.6'
+    sourceSets = [sourceSets.main]
+    configFile = rootProject.file("config/checkstyle/checkstyle.xml");
+    showViolations = true
+    ignoreFailures = true
+}
+
+checkstyleTest {
+    enabled = true
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        html.destination rootProject.file("build/reports/checkstyle.html")
+    }
+}
